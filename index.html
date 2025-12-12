@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="VideoWorld 2: Learning Transferable Knowledge from Real-world Videos">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VideoWorld 2: Learning Transferable Knowledge from Real-world Videos</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/videoworld_logo.svg">
+  <link rel="stylesheet" href="./static/css/float.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      "HTML-CSS": { styles: { '.MathJax_Display': { color: "black" } } }
+    });
+  </script>
+
+  <style>
+    /* --- 基础清理 --- */
+    .results-carousel video {
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    .results-carousel .item {
+      border: none !important;
+      outline: none !important;
+    }
+
+    /* --- 对话框布局样式 --- */
+    .dialogue-container {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 550px; 
+      background-color: #f5f5f5;
+      border-radius: 15px;
+      position: relative;
+    }
+
+    /* 右侧（用户） */
+    .dialogue-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    /* 左侧（AI） */
+    .dialogue-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    /* --- 暴力修复：强制显示所有内容 --- */
+    .dialogue-box {
+      opacity: 1 !important; /* 强制不透明 */
+      visibility: visible !important; /* 强制可见 */
+      display: block !important; /* 强制块级显示 */
+      margin-bottom: 15px;
+    }
+
+    /* 具体组件样式 */
+    .user-box img {
+      width: 180px;
+      border-radius: 12px;
+      border: 3px solid #eee;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .user-text p {
+      background-color: #007aff;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 18px 18px 0 18px;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 18px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin: 0;
+    }
+
+    .ai-text p {
+      color: #555;
+      font-style: italic;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 16px;
+      margin-left: 5px;
+      margin-bottom: 5px;
+    }
+
+    .ai-video video {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: block;
+    }
+
+    /* --- 高级视觉优化 --- */
+    
+    /* 全局字体优化 */
+    body {
+      font-family: 'Google Sans', 'Noto Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #fcfcfc; /* 极淡的灰白色背景，更有质感 */
+    }
+
+    /* 标题字体增强与高级感设计 */
+    h1.title, h2.title, .title {
+      font-family: 'Georgia', serif !important;
+      letter-spacing: -0.5px;
+      color: #2c3e50;
+      position: relative;
+    }
+
+    /* 主标题：微立体感 */
+    .publication-title {
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* 章节标题装饰：动态金线 */
+    h2.title {
+      display: inline-block;
+      padding-bottom: 12px; /* 为横线留出空间 */
+    }
+    
+    h2.title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px; /* 初始短横线，极简风格 */
+      height: 3px;
+      background: linear-gradient(90deg, #b0981f, #f3d03e); /* 金色渐变呼应 Highlights */
+      border-radius: 4px;
+      transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 2px 4px rgba(176, 152, 31, 0.3);
+    }
+
+    /* 鼠标悬停时优雅展开 */
+    h2.title:hover::after {
+      width: 80%; 
+    }
+
+    /* 按钮高级动效 */
+    .button.is-dark {
+      background-color: #363636;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .button.is-dark:hover {
+      background-color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+      border-color: #555;
+    }
+
+    /* 滚动出现动画 */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .scroll-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Highlights 卡片化优化 */
+    .highlight-box {
+      background: #f5f5f5; /* 与对话框统一的浅灰色 */
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+      border-left: 5px solid #b0981f; /* 金色边框呼应文中颜色 */
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+    }
+    .highlight-box:hover {
+      background: #eeeeee; /* 悬停稍微变深 */
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    /* 对话框高级质感 */
+    .dialogue-container {
+      /* ...existing code... */
+      background-color: #f9f9f9; /* 稍微加深一点灰，增加对比 */
+      box-shadow: 0 15px 35px rgba(0,0,0,0.06); /* 更柔和深邃的阴影 */
+      border: 1px solid rgba(0,0,0,0.02);
+    }
+    
+    .user-text p {
+      background: linear-gradient(135deg, #007aff, #0056b3); /* 渐变色气泡 */
+      /* ...existing code... */
+    }
+
+    /* 火焰跳动动画 */
+    @keyframes flame-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2) rotate(5deg); }
+      100% { transform: scale(1); }
+    }
+    .fire-icon {
+      display: inline-block;
+      animation: flame-pulse 2s infinite ease-in-out;
+    }
+
+    /* Logo 样式 */
+    .project-logo {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      cursor: pointer;
+    }
+    
+    .project-logo:hover {
+      transform: scale(1.15) rotate(-3deg);
+      filter: drop-shadow(0 10px 20px rgba(52, 152, 219, 0.4));
+    }
+
+    /* 主标题文字特效 */
+    .main-title-text {
+      display: inline-block;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+      cursor: default;
+    }
+    .main-title-text:hover {
+      transform: scale(1.05) translateY(-2px);
+      filter: brightness(1.2) hue-rotate(-10deg);
+    }
+
+    /* --- 小标题特效 (复刻大标题) --- */
+    h2.title .section-logo {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px; /* 调整图标和文字间距 */
+    }
+    
+    h2.title .section-text {
+      display: inline-block;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+      vertical-align: middle;
+    }
+
+    /* 鼠标悬停在标题整体（包括文字）时触发特效 */
+    h2.title:hover .section-logo {
+      transform: scale(1.15) rotate(-3deg);
+      filter: drop-shadow(0 10px 20px rgba(52, 152, 219, 0.4));
+    }
+
+    h2.title:hover .section-text {
+      transform: scale(1.05) translateY(-2px);
+      filter: brightness(1.2) hue-rotate(-10deg);
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" style="display: flex; flex-direction: column; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+              <img src="./static/images/videoworld_logo.svg" style="width: 60px; height: auto;" alt="Logo" class="project-logo"/>
+              <span class="main-title-text" style="font-family: 'Georgia', serif; font-weight: 700; background: linear-gradient(120deg, #2c3e50, #3498db); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">VideoWorld 2</span>
+            </div>
+            <span style="font-family: 'Georgia', serif; font-size: 0.6em; color: #555; font-weight: 400; letter-spacing: 0.5px;">Learning Transferable Knowledge from Real-world Videos</span>
+          </h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=e5TJm-0AAAAJ&hl=zh-CN"><font face="Georgia">Zhongwei Ren</font></a><sup>1,2</sup>,</span>
+            <span class="author-block">
+              <a href="https://weiyc.github.io/"><font face="Georgia">Yunchao Wei</font></a><sup>1<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>†</mo></math></sup>,
+              <span class="author-block">
+                <a href="https://weiyc.github.io/"><font face="Georgia">Xiao Yu</font></a><sup>1</sup>,</span>
+            </span>
+            <span class="author-block">
+              <a href="https://weiyc.github.io/"><font face="Georgia">Guixun Luo</font></a><sup>1<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>†</mo></math></sup>,
+
+            </span>
+            <br>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=474TbQYAAAAJ&hl=zh-CN"><font face="Georgia">Yao Zhao</font></a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com.sg/citations?user=NmHgX-wAAAAJ&hl=en"><font face="Georgia">Bingyi Kang</font></a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://sites.google.com/site/jshfeng/home"><font face="Georgia">Jiashi Feng</font></a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com.sg/citations?user=OEZ816YAAAAJ&hl=en"><font face="Georgia">Xiaojie Jin</font></a><sup>2<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>†</mo></math><math xmlns="http://www.w3.org/1998/Math/MathML"><mo>‡</mo></math></sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup><font face="Georgia">Beijing Jiaotong University,</font></span>
+            <span class="author-block"><sup>2</sup><font face="Georgia">ByteDance Seed</font></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">(<sup><math xmlns="http://www.w3.org/1998/Math/MathML"><mo>†</mo></math></sup><font face="Georgia">Correspondence,</font><sup><math xmlns="http://www.w3.org/1998/Math/MathML"><mo>‡</mo></math></sup><font face="Georgia">Project Lead)</font></span>
+          </div>
+
+         
+          
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2501.09781"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2501.09781"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="https://youtu.be/Cdi-qikbEzk"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/bytedance/VideoWorld"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+    <div class="column is-full">
+    <div class="hero-body">
+      <img src="./static/images/fig1_seed.png"
+                class="interpolation-image"
+                alt="Interpolate start reference image."/>
+
+                <div class="columns is-centered has-text-centered">
+                  <div class="column is-full">
+                    <div class="content has-text-justified">
+                     
+                      <p style="font-size: 16px;">
+                        <font face="Georgia">Figure 1: (left) VideoWorld 2 explores how to learn transferable knowledge from unlabeled real-world videos. (right) Comparison of different frameworks. VDM (e.g., Wan2.2 14B) produces high visual fidelity but fails to learn task-relevant dynamics or long-horizon policies. VideoWorld 1 improves policy learning but suffers from poor visual quality in real-world scenarios. VideoWorld 2 learns more robust latent dynamics while also achieving significantly better visual quality, enabling generalizable long-horizon knowledge learning from videos.</font>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Video Carousel Section -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h2 class="title is-3"><span class="section-text" style="font-family: 'Georgia', serif;">Video Demos</span></h2>
+      <div id="results-carousel" class="carousel results-carousel">
+        
+        <!-- Item 1: Paper Airplane -->
+        <div class="item item-video1">
+          <div class="dialogue-container">
+            <!-- Right Side: User Instruction -->
+            <div class="dialogue-right">
+              <div class="dialogue-box user-box">
+                <img src="./static/images/Paper_Airplane_Example_1.png" alt="Instruction Image">
+              </div>
+              <div class="dialogue-box user-text">
+                <p>Please fold a paper airplane</p>
+              </div>
+            </div>
+
+            <!-- Left Side: AI Response -->
+            <div class="dialogue-left">
+              <div class="dialogue-box ai-text">
+                <p>Imagining...</p>
+              </div>
+              <div class="dialogue-box ai-video">
+                <video poster="" id="video1" controls muted loop playsinline preload="metadata">
+                  <source src="./static/images/Paper_Airplane_Example_1.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2: Building Block Horse -->
+        <div class="item item-video2">
+           <div class="dialogue-container">
+            <div class="dialogue-right">
+              <div class="dialogue-box user-box">
+                <img src="./static/images/BuildingBlock_Horse_Example_1.png" alt="Instruction Image"> 
+              </div>
+              <div class="dialogue-box user-text">
+                <p>Please build a horse</p>
+              </div>
+            </div>
+            <div class="dialogue-left">
+              <div class="dialogue-box ai-text">
+                <p>Imagining...</p>
+              </div>
+              <div class="dialogue-box ai-video">
+                <video poster="" id="video2" controls muted loop playsinline preload="metadata">
+                  <source src="./static/images/BuildingBlock_Horse_Example_1.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3: Paper Boat -->
+        <div class="item item-video3">
+           <div class="dialogue-container">
+            <div class="dialogue-right">
+              <div class="dialogue-box user-box">
+                <img src="./static/images/Paper_Boat_Example_1.png" alt="Instruction Image">
+              </div>
+              <div class="dialogue-box user-text">
+                <p>Please fold a paper boat</p>
+              </div>
+            </div>
+            <div class="dialogue-left">
+              <div class="dialogue-box ai-text">
+                <p>Imagining...</p>
+              </div>
+              <div class="dialogue-box ai-video">
+                <video poster="" id="video3" controls muted loop playsinline preload="metadata">
+                  <source src="./static/images/Paper_Boat_Example_1.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">
+          <img src="./static/images/videoworld_logo.svg" class="section-logo" alt="Logo" width="6%"/>
+          <span class="section-text" style="font-family: 'Georgia', serif;">Abstract</span>
+        </h2>
+        <div class="content has-text-justified">
+          <p style="font-size: 20px;">
+            <font face="Georgia">Learning transferable knowledge from unlabeled video data and applying it in new environments is a fundamental capability of intelligent agents. This work presents <b>VideoWorld 2</b>, which extends VideoWorld and offers the first investigation into learning transferable knowledge directly from raw real-world videos. At its core, VideoWorld 2 introduces a disentangled Latent Dynamics Model (dLDM) that decouples action dynamics from visual appearance: a pretrained video diffusion model handles visual appearance modeling, enabling the dLDM to learn latent codes that focus on compact and meaningful task-related dynamics. These latent codes are then modeled autoregressively to learn task policies and support long-horizon reasoning. We evaluate VideoWorld 2 on challenging real-world handcraft making tasks, where prior video generation and latent-dynamics models struggle to operate reliably. Remarkably, VideoWorld 2 achieves up to <b>70% improvement in task success rate</b> and produces coherent long execution videos. In robotics, we show that VideoWorld 2 can acquire effective manipulation knowledge from the Open-X dataset, which substantially improves task performance on CALVIN. This study reveals the potential of learning transferable world knowledge directly from raw videos, with all code, data, and models to be open-sourced for further research.</font>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <!-- <h2 class="title is-3"></h2> -->
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/y_TT4dtIPXA?si=jiaM-BjxEeT2WLL5"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+<section class="hero is-big" style="margin-top: 35px; padding-bottom: 35px;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <br>
+        <h2 class="title is-3"><span class="fire-icon">🔥</span><span class="section-text" style="font-family: 'Georgia', serif;">Highlights</span> </h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full" style="font-family: 'Georgia', serif;">
+          
+          <div class="highlight-box">
+            <p style="font-size: 20px; margin-bottom: 0;">
+              1. <b>We are the first to explore</b> <span style="color: rgb(176, 152, 31)">how to learn transferable world knowledge for complex long-horizon tasks directly from raw real-world videos, </span> and we reveal that disentangling action dynamics from visual appearance is essential for successful knowledge learning.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p style="font-size: 20px; margin-bottom: 0;">
+              2. <b>We propose VideoWorld 2</b> <span style="color: rgb(176, 152, 31)">, whose core is a disentangled Latent Dynamics Model (dLDM) that decouples task-relevant dynamics from visual appearance</span>, enhancing the quality and transferability of learned knowledge.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p style="font-size: 20px; margin-bottom: 0;">
+              3. <b>We construct Video-CraftBench</b>, to address the rarely explored challenge of fine-grained, long-horizon visual reasoning through real-world handicraft tasks. This benchmark facilitates future research on learning transferable knowledge from raw videos.
+            </p>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop" style="font-family: 'Georgia', serif;">
+
+    <!-- Animation. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">
+          <img src="./static/images/videoworld_logo.svg" class="section-logo" alt="Logo" width="5%"/>
+          <span class="section-text">Background</span>
+        </h2>
+      </div>
+    </div>
+    <div class="columns is-centered ">
+      <div class="column is-full">
+        <div class="content has-text-justified">
+          
+          <p style="font-size: 20px;">
+            Current AI models learning knowledge mainly from text data, however, text alone can not fully encapsulate the rich information inherent in the real visual world. In contrast, biological organisms can acquire knowledge solely from visual inputs, flexibly applying and generalizing it to future scenarios. For instance, a child can replicate paper folding skills observed in a video using different materials without any textual guidance. Endowing AI with this capacity to learn generalizable knowledge from raw video is fundamental for task execution in both real and digital world, and holds significant potential for scaling up AI knowledge.
+            </p>
+            <p style="font-size: 20px;">
+            VideoWorld first explores learning knowledge from synthetic videos. However, its training recipe and model design impede knowledge extraction from real-world videos. Other approaches either rely on labels or language guidance to extract knowledge from video or handle only seconds-long tasks. When confronted with minute-long, complex multi-step task videos, current methods fail to replicate the human ability to extract core task knowledge and apply it to novel scenarios solely through observation—even for tasks like paper folding that children can easily master (See Sec. 4.2 for details). These constraints raise an important question: 
+            <b><i>Can AI learn transferable knowledge for complex and long-horizon tasks directly from unlabeled real-world videos?</i></b>
+          </p>
+        </div>
+       </div>
+    </div>
+
+    <br>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">
+          <img src="./static/images/videoworld_logo.svg" class="section-logo" alt="Logo" width="5%"/>
+          <span class="section-text">Our Work</span>
+        </h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered ">
+      <div class="column is-full">
+        <div class="content has-text-justified">
+          
+          <p style="font-size: 20px;">
+            To explore this question, we consider two challenging real-world environments. The first is <b>handcraft making</b>, which serves as a strong testbed for learning task knowledge from raw video. These videos require fine-grained manipulation under varied desktop environments and object appearances, involving deformable materials, viewpoint shifts, and frequent occlusions. Furthermore, the videos span minutes and comprise multiple interdependent steps, presenting significantly higher complexity and longer horizons than entertainment-oriented video generation or typical imitation settings. In parallel, we investigate robotic manipulation by learning from the Open-X dataset, which contains real-world demonstration videos, and evaluating on the CALVIN environment to test the generalization of the learned knowledge. Together, these environments provide a comprehensive test of whether knowledge learned from raw videos can transfer across scenes, tasks, and embodiments.
+            </p>
+            
+            <!-- Inserted PDF as Image -->
+            <div class="columns is-centered has-text-centered">
+              <div class="column is-full">
+                <img src="./static/images/supp_key_step_v2.png" class="interpolation-image" alt="Key Steps"/>
+              </div>
+            </div>
+
+        </div>
+       </div>
+    </div>
+    <br>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">
+          <img src="./static/images/videoworld_logo.svg" class="section-logo" alt="Logo" width="5%"/>
+          <span class="section-text">Overall Architecture</span>
+        </h2>
+      </div>
+    </div>
+
+   
+    <div class="columns is-centered ">
+      <div class="column is-full">
+        <div class="content has-text-justified">
+          <img src="./static/images/method_v4.png"
+                class="interpolation-image"
+                alt="Interpolate start reference image."/>
+                <figcaption style="font-size: 16px;">Figure 5: (Left) First, a dLDM compresses future visual changes into compact and generalizable latent codes. These codes are then modeled by an autoregressive transformer. (Right) In inference, the transformer predicts latent codes for a new, unseen environment from the input image, which are subsequently decoded into task execution videos.</figcaption>
+        
+          <br>
+          <p style="font-size: 20px;">We propose <b>VideoWorld 2</b>, which features a <b>disentangled Latent Dynamics Model</b> (dLDM) as its core design to effectively decouple appearance modeling from action dynamics learning, thereby enabling robust knowledge acquisition. The dLDM consists of a causal VQ-VAE and a pretrained Video Diffusion Model (VDM). The VQ-VAE compresses future visual changes into discrete latent codes that capture task-relevant dynamics, while the VDM models visual appearance and produces high-fidelity reconstructions. The latent codes condition the VDM through cross-attention, and gradients from the VDM further refine these codes so they focus on concise and transferable dynamics rather than appearance details. By delegating appearance modeling to the pretrained VDM, VideoWorld 2 learns more robust and generalizable latent dynamics than prior approaches.</p>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content" style="font-family: 'Georgia', serif;">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@misc{ren2025videoworldexploringknowledgelearning,
+  title={VideoWorld: Exploring Knowledge Learning from Unlabeled Videos}, 
+  author={Zhongwei Ren and Yunchao Wei and Xun Guo and Yao Zhao and Bingyi Kang and Jiashi Feng and Xiaojie Jin},
+  year={2025},
+  eprint={2501.09781},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2501.09781}, 
+}
+</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This website is adapted from <a
+            href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>, licensed under a <a rel="license"
+            href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+Commons Attribution-ShareAlike 4.0 International License</a>. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+$(document).ready(function() {
+    // Initialize the carousel with specific options
+    var carousels = bulmaCarousel.attach('#results-carousel', {
+      slidesToScroll: 1,
+      slidesToShow: 1,
+      pagination: false,
+      loop: true,
+      infinite: true,
+      autoplay: true,
+      autoplaySpeed: 6000, // Slower autoplay to give time for video
+      pauseOnHover: true,
+    });
+
+    // Video control logic
+    if (carousels && carousels.length > 0) {
+      var carousel = carousels[0];
+
+      // Function to handle video playback
+      function playActiveVideo() {
+        // Pause all videos first
+        $('#results-carousel video').each(function() {
+          this.pause();
+        });
+
+        // Find the active item and play its video
+        // We use a small timeout because the 'is-active' class might not be updated immediately
+        setTimeout(() => {
+          var $activeItem = $('#results-carousel .item.is-active');
+          var video = $activeItem.find('video').get(0);
+          if (video) {
+            // Reset time to 0 if you want it to start from beginning every time
+            // video.currentTime = 0; 
+            var playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                console.log("Auto-play prevented:", error);
+              });
+            }
+          }
+        }, 100);
+      }
+
+      // Listen for slide changes
+      carousel.on('after:show', function(state) {
+        console.log("Slide changed", state);
+        playActiveVideo();
+      });
+      
+      // Also try 'show' event just in case
+      carousel.on('show', function(state) {
+        console.log("Slide show", state);
+        playActiveVideo();
+      });
+
+      // Initial play
+      playActiveVideo();
+    }
+
+    // --- 滚动动画逻辑 ---
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); // 只动画一次
+        }
+      });
+    }, observerOptions);
+
+    // 自动给主要章节添加动画类
+    $('section').each(function() {
+      $(this).addClass('scroll-reveal');
+      observer.observe(this);
+    });
+    
+    // 给 Highlights 的每一项单独添加动画（如果存在）
+    $('.highlight-box').each(function(index) {
+      $(this).addClass('scroll-reveal');
+      $(this).css('transition-delay', (index * 0.1) + 's'); // 错峰动画
+      observer.observe(this);
+    });
+});
+</script>
+
+</body>
+</html>

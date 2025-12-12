@@ -1,0 +1,250 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+
+.footer .icon-link {
+    font-size: 25px;
+    color: #000;
+}
+
+.link-block a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.dnerf {
+  font-variant: small-caps;
+}
+
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+
+.publication-title {
+}
+
+.publication-banner {
+  max-height: parent;
+
+}
+
+.publication-banner video {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  object-fit: fit;
+}
+
+.publication-header .hero-body {
+}
+
+.publication-title {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-authors {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-venue {
+    color: #555;
+    width: fit-content;
+    font-weight: bold;
+}
+
+.publication-awards {
+    color: #ff3860;
+    width: fit-content;
+    font-weight: bolder;
+}
+
+.publication-authors {
+}
+
+.publication-authors a {
+   color: hsl(204, 86%, 53%) !important;
+}
+
+.publication-authors a:hover {
+    text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.publication-banner img {
+}
+
+.publication-authors {
+  /*color: #4286f4;*/
+}
+
+.publication-video {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+
+    overflow: hidden;
+    border-radius: 10px !important;
+}
+
+.publication-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.publication-body img {
+}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 5px;
+  overflow: hidden;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  padding: 0;
+  font-size: 0;
+}
+
+.results-carousel video {
+  margin: 0;
+}
+
+
+.interpolation-panel {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.interpolation-panel .interpolation-image {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.interpolation-video-column {
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+.interpolation-panel .slider {
+  margin: 0 !important;
+}
+
+#interpolation-image-wrapper {
+  width: 100%;
+}
+#interpolation-image-wrapper img {
+  border-radius: 5px;
+}
+
+/* Dialogue Container Layout */
+.dialogue-container {
+  display: flex;
+  flex-direction: column; /* 垂直排列，先右后左视觉上通过对齐实现 */
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5; /* 可选：背景色 */
+  border-radius: 15px;
+  min-height: 400px; /* 保证高度一致 */
+}
+
+/* Right Side (User) */
+.dialogue-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* 靠右对齐 */
+  margin-bottom: 20px;
+}
+
+/* Left Side (AI) */
+.dialogue-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 靠左对齐 */
+}
+
+/* Common Box Styles */
+.dialogue-box {
+  margin-bottom: 10px;
+  opacity: 0; /* 初始隐藏 */
+  animation-fill-mode: forwards; /* 动画结束后保持状态 */
+}
+
+/* Specific Styles */
+.user-box img {
+  max-width: 150px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+}
+
+.user-text p {
+  background-color: #007aff; /* 蓝色气泡 */
+  color: white;
+  padding: 10px 15px;
+  border-radius: 15px 15px 0 15px;
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+}
+
+.ai-text p {
+  color: #666;
+  font-style: italic;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.ai-video video {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  display: block;
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation Classes (Active state) */
+/* 当父元素有 .active 类时触发动画 */
+.carousel-item-active .delay-1 {
+  animation: fadeInUp 0.5s ease 0.2s forwards;
+}
+.carousel-item-active .delay-2 {
+  animation: fadeInUp 0.5s ease 1.0s forwards; /* 延迟更久 */
+}
+.carousel-item-active .delay-3 {
+  animation: fadeInUp 0.5s ease 2.0s forwards;
+}
+.carousel-item-active .delay-4 {
+  animation: fadeInUp 0.8s ease 2.8s forwards;
+}
