@@ -173,7 +173,7 @@
 
     /* 鼠标悬停时优雅展开 */
     h2.title:hover::after {
-      width: 80%; 
+      width: 60%; 
     }
 
     /* 按钮高级动效 */
@@ -246,22 +246,39 @@
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
       cursor: pointer;
+      animation: logo-intro 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s;
     }
     
-    .project-logo:hover {
-      transform: scale(1.15) rotate(-3deg);
-      filter: drop-shadow(0 10px 20px rgba(52, 152, 219, 0.4));
-    }
-
     /* 主标题文字特效 */
     .main-title-text {
       display: inline-block;
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
       cursor: default;
+      animation: title-intro 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
     }
-    .main-title-text:hover {
+
+    /* 鼠标悬停在主标题整体时触发特效 */
+    .publication-title:hover .project-logo {
+      transform: scale(1.15) rotate(-3deg);
+      filter: drop-shadow(0 10px 20px rgba(52, 152, 219, 0.4));
+    }
+
+    .publication-title:hover .main-title-text {
       transform: scale(1.05) translateY(-2px);
       filter: brightness(1.2) hue-rotate(-10deg);
+    }
+
+    /* --- 开场动画 Keyframes --- */
+    @keyframes logo-intro {
+      0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+      50% { transform: scale(1.15) rotate(-3deg); filter: drop-shadow(0 10px 20px rgba(52, 152, 219, 0.4)); }
+      100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+    }
+
+    @keyframes title-intro {
+      0% { transform: scale(1) translateY(0); filter: brightness(1) hue-rotate(0deg); }
+      50% { transform: scale(1.05) translateY(-2px); filter: brightness(1.2) hue-rotate(-10deg); }
+      100% { transform: scale(1) translateY(0); filter: brightness(1) hue-rotate(0deg); }
     }
 
     /* --- 小标题特效 (复刻大标题) --- */
@@ -289,6 +306,31 @@
       transform: scale(1.05) translateY(-2px);
       filter: brightness(1.2) hue-rotate(-10deg);
     }
+
+    /* --- 副标题特效 --- */
+    .subtitle-text {
+      opacity: 0;
+      animation: fadeInUp 1s ease-out 0.5s forwards; /* 延迟出现 */
+      transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .subtitle-text:hover {
+      color: #3498db !important; /* 悬停变蓝 */
+      text-shadow: 0 0 10px rgba(52, 152, 219, 0.4);
+      transform: scale(1.02);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body>
@@ -303,7 +345,7 @@
               <img src="./static/images/videoworld_logo.svg" style="width: 60px; height: auto;" alt="Logo" class="project-logo"/>
               <span class="main-title-text" style="font-family: 'Georgia', serif; font-weight: 700; background: linear-gradient(120deg, #2c3e50, #3498db); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">VideoWorld 2</span>
             </div>
-            <span style="font-family: 'Georgia', serif; font-size: 0.6em; color: #555; font-weight: 400; letter-spacing: 0.5px;">Learning Transferable Knowledge from Real-world Videos</span>
+            <span class="subtitle-text" style="font-family: 'Georgia', serif; font-size: 0.6em; color: #555; font-weight: 400; letter-spacing: 0.5px;">Learning Transferable Knowledge from Real-world Videos</span>
           </h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
@@ -421,7 +463,10 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container has-text-centered">
-      <h2 class="title is-3"><span class="section-text" style="font-family: 'Georgia', serif;">Video Demos</span></h2>
+      <h2 class="title is-3">
+        <img src="./static/images/videoworld_logo.svg" class="section-logo" alt="Logo" width="5%"/>
+        <span class="section-text" style="font-family: 'Georgia', serif;">Video Demos</span>
+      </h2>
       <div id="results-carousel" class="carousel results-carousel">
         
         <!-- Item 1: Paper Airplane -->
@@ -445,6 +490,136 @@
               <div class="dialogue-box ai-video">
                 <video poster="" id="video1" controls muted loop playsinline preload="metadata">
                   <source src="./static/images/Paper_Airplane_Example_1.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item item-video1">
+          <div class="dialogue-container">
+            <!-- Right Side: User Instruction -->
+            <div class="dialogue-right">
+              <div class="dialogue-box user-box">
+                <img src="./static/images/Paper_Airplane_Example_2.png" alt="Instruction Image">
+              </div>
+              <div class="dialogue-box user-text">
+                <p>Please fold a paper airplane</p>
+              </div>
+            </div>
+
+            <!-- Left Side: AI Response -->
+            <div class="dialogue-left">
+              <div class="dialogue-box ai-text">
+                <p>Imagining...</p>
+              </div>
+              <div class="dialogue-box ai-video">
+                <video poster="" id="video1" controls muted loop playsinline preload="metadata">
+                  <source src="./static/images/Paper_Airplane_Example_2.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-video1">
+          <div class="dialogue-container">
+            <!-- Right Side: User Instruction -->
+            <div class="dialogue-right">
+              <div class="dialogue-box user-box">
+                <img src="./static/images/BuildingBlock_Person_Example_1.png" alt="Instruction Image">
+              </div>
+              <div class="dialogue-box user-text">
+                <p>Please build a person using blocks</p>
+              </div>
+            </div>
+
+            <!-- Left Side: AI Response -->
+            <div class="dialogue-left">
+              <div class="dialogue-box ai-text">
+                <p>Imagining...</p>
+              </div>
+              <div class="dialogue-box ai-video">
+                <video poster="" id="video1" controls muted loop playsinline preload="metadata">
+                  <source src="./static/images/BuildingBlock_Person_Example_1.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-video1">
+          <div class="dialogue-container">
+            <!-- Right Side: User Instruction -->
+            <div class="dialogue-right">
+              <div class="dialogue-box user-box">
+                <img src="./static/images/BuildingBlock_Tower_Example_1.png" alt="Instruction Image">
+              </div>
+              <div class="dialogue-box user-text">
+                <p>Please build a tower using blocks</p>
+              </div>
+            </div>
+
+            <!-- Left Side: AI Response -->
+            <div class="dialogue-left">
+              <div class="dialogue-box ai-text">
+                <p>Imagining...</p>
+              </div>
+              <div class="dialogue-box ai-video">
+                <video poster="" id="video1" controls muted loop playsinline preload="metadata">
+                  <source src="./static/images/BuildingBlock_Tower_Example_1.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-video1">
+          <div class="dialogue-container">
+            <!-- Right Side: User Instruction -->
+            <div class="dialogue-right">
+              <div class="dialogue-box user-box">
+                <img src="./static/images/Paper_Boat_Example_2.png" alt="Instruction Image">
+              </div>
+              <div class="dialogue-box user-text">
+                <p>Please fold a paper boat</p>
+              </div>
+            </div>
+
+            <!-- Left Side: AI Response -->
+            <div class="dialogue-left">
+              <div class="dialogue-box ai-text">
+                <p>Imagining...</p>
+              </div>
+              <div class="dialogue-box ai-video">
+                <video poster="" id="video1" controls muted loop playsinline preload="metadata">
+                  <source src="./static/images/Paper_Boat_Example_2.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-video1">
+          <div class="dialogue-container">
+            <!-- Right Side: User Instruction -->
+            <div class="dialogue-right">
+              <div class="dialogue-box user-box">
+                <img src="./static/images/BuildingBlock_Tower_Example_2.png" alt="Instruction Image">
+              </div>
+              <div class="dialogue-box user-text">
+                <p>Please fold a tower airplane</p>
+              </div>
+            </div>
+
+            <!-- Left Side: AI Response -->
+            <div class="dialogue-left">
+              <div class="dialogue-box ai-text">
+                <p>Imagining...</p>
+              </div>
+              <div class="dialogue-box ai-video">
+                <video poster="" id="video1" controls muted loop playsinline preload="metadata">
+                  <source src="./static/images/BuildingBlock_Tower_Example_2.mp4" type="video/mp4">
                 </video>
               </div>
             </div>
@@ -619,6 +794,7 @@
             <div class="columns is-centered has-text-centered">
               <div class="column is-full">
                 <img src="./static/images/supp_key_step_v2.png" class="interpolation-image" alt="Key Steps"/>
+                <figcaption style="font-size: 16px; text-align: justify; margin-top: 10px;">Figure 2: Our objective is to learn transferable knowledge for complex and long-horizon tasks from real-world videos. We prioritize tasks that demand multi-step planning and feature delicate manipulations. To this end, we introduce the Video-CraftBench, a dataset of first-person video tutorials covering five long-horizon handcraft tasks: folding a paper airplane, folding a paper boat, and building a tower/horse/person using blocks.</figcaption>
               </div>
             </div>
 
@@ -642,7 +818,7 @@
           <img src="./static/images/method_v4.png"
                 class="interpolation-image"
                 alt="Interpolate start reference image."/>
-                <figcaption style="font-size: 16px;">Figure 5: (Left) First, a dLDM compresses future visual changes into compact and generalizable latent codes. These codes are then modeled by an autoregressive transformer. (Right) In inference, the transformer predicts latent codes for a new, unseen environment from the input image, which are subsequently decoded into task execution videos.</figcaption>
+                <figcaption style="font-size: 16px;">Figure 3: (Left) First, a dLDM compresses future visual changes into compact and generalizable latent codes. These codes are then modeled by an autoregressive transformer. (Right) In inference, the transformer predicts latent codes for a new, unseen environment from the input image, which are subsequently decoded into task execution videos.</figcaption>
         
           <br>
           <p style="font-size: 20px;">We propose <b>VideoWorld 2</b>, which features a <b>disentangled Latent Dynamics Model</b> (dLDM) as its core design to effectively decouple appearance modeling from action dynamics learning, thereby enabling robust knowledge acquisition. The dLDM consists of a causal VQ-VAE and a pretrained Video Diffusion Model (VDM). The VQ-VAE compresses future visual changes into discrete latent codes that capture task-relevant dynamics, while the VDM models visual appearance and produces high-fidelity reconstructions. The latent codes condition the VDM through cross-attention, and gradients from the VDM further refine these codes so they focus on concise and transferable dynamics rather than appearance details. By delegating appearance modeling to the pretrained VDM, VideoWorld 2 learns more robust and generalizable latent dynamics than prior approaches.</p>
