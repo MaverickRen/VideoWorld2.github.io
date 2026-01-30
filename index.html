@@ -17,6 +17,7 @@
   </script>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
@@ -37,7 +38,8 @@
   </script>
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
-      "HTML-CSS": { styles: { '.MathJax_Display': { color: "black" } } }
+      "HTML-CSS": { styles: { '.MathJax_Display': { color: "#c5c6c7" }, '.MathJax': { color: "#c5c6c7" } } },
+      tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } 
     });
   </script>
 
@@ -62,7 +64,7 @@
       margin: 0 auto;
       padding: 20px;
       min-height: 550px; 
-      background-color: #f5f5f5;
+      background-color: #151922;
       border-radius: 15px;
       position: relative;
     }
@@ -96,8 +98,8 @@
     .user-box img {
       width: 180px;
       border-radius: 12px;
-      border: 3px solid #eee;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 
     .user-text p {
@@ -112,7 +114,7 @@
     }
 
     .ai-text p {
-      color: #555;
+      color: #b0b0b0;
       font-style: italic;
       font-family: 'Google Sans', sans-serif;
       font-size: 16px;
@@ -124,7 +126,8 @@
       width: 100%;
       max-width: 500px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* 加深阴影 */
+      border: 1px solid rgba(255, 255, 255, 0.1);
       display: block;
     }
 
@@ -135,23 +138,92 @@
       font-family: 'Google Sans', 'Noto Sans', sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      background-color: #fcfcfc; /* 极淡的灰白色背景，更有质感 */
+      background-color: transparent; /* 透明，让位于伪元素背景 */
+      color: #f0f0f0;
+      position: relative;
+    }
+    
+    /* 整个页面的背景底色，防止伪元素加载前白屏 */
+    html {
+      background-color: #020205;
+      height: 100%;
+    }
+
+    /* 1. 深空渐变层 (固定背景，复刻 TechBackground) */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      /* 升级版：使用 ellipse (椭圆) 适配宽屏显示器，解决“两侧过黑”的问题 */
+      /* 稍微提亮了中心紫色 (#262645)，并让渐变范围延伸至 120% 甚至更远，确保全屏覆盖 */
+      background: radial-gradient(ellipse 100% 90% at 50% 15%, #262645 0%, #080810 50%, #000000 100%);
+      z-index: -2;
+    }
+
+    /* 2. 动态网格层 (复刻 TechBackground Grid) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200%; /* 足够大以便移动 */
+      height: 200%;
+      /* 浅蓝色极细网格 rgba(77, 171, 247, 0.05) */
+      background: 
+        linear-gradient(90deg, rgba(77, 171, 247, 0.05) 1px, transparent 1px),
+        linear-gradient(rgba(77, 171, 247, 0.05) 1px, transparent 1px);
+      background-size: 80px 80px;
+      animation: grid-move 60s linear infinite;
+      z-index: -1;
+      pointer-events: none; /* 确保不挡住点击 */
+    }
+
+    @keyframes grid-move {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-40px, -40px); }
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0c10;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f2fe;
+    }
+
+    a {
+      color: #4facfe;
+      transition: all 0.3s ease;
+    }
+    a:hover {
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
     }
 
     /* 标题字体增强与高级感设计 */
     h1.title, h2.title, .title {
-      font-family: 'Georgia', serif !important;
-      letter-spacing: -0.5px;
-      color: #2c3e50;
+      font-family: 'Exo 2', sans-serif !important; /* 参考 TSX: 使用具有科技感的 Exo 2 字体 */
+      letter-spacing: 0.02em;
+      color: #ffffff !important;
+      text-shadow: none; /* 保持简洁，去除过多光效 */
       position: relative;
     }
 
     /* 主标题：微立体感 */
     .publication-title {
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-shadow: none;
     }
 
-    /* 章节标题装饰：动态金线 */
+    /* 章节标题装饰：动态光线 */
     h2.title {
       display: inline-block;
       padding-bottom: 12px; /* 为横线留出空间 */
@@ -164,11 +236,27 @@
       left: 50%;
       transform: translateX(-50%);
       width: 40px; /* 初始短横线，极简风格 */
-      height: 3px;
-      background: linear-gradient(90deg, #b0981f, #f3d03e); /* 金色渐变呼应 Highlights */
+      height: 2px;
+      background: #ffffff; /* 纯白线条，简洁 */
       border-radius: 4px;
       transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      box-shadow: 0 2px 4px rgba(176, 152, 31, 0.3);
+      box-shadow: none;
+    }
+
+    /* --- 强制覆盖旧字体 --- */
+    font[face="Georgia"] {
+      font-family: 'Google Sans', sans-serif !important;
+    }
+    
+    /* 对所有显式设置了 Georgia 的元素进行覆盖，改为无衬线体 */
+    [style*="font-family: 'Georgia'"] {
+      font-family: 'Exo 2', sans-serif !important;
+    }
+    
+    /* 特别修正正文区域的字体，不使用 Exo 2 而是用更好读的 Google Sans */
+    .content [style*="font-family: 'Georgia'"],
+    .publication-authors [style*="font-family: 'Georgia'"] {
+      font-family: 'Google Sans', sans-serif !important;
     }
 
     /* 鼠标悬停时优雅展开 */
@@ -176,18 +264,21 @@
       width: 60%; 
     }
 
-    /* 按钮高级动效 */
+    /* 按钮高级动效 - 玻璃拟态科技感 */
     .button.is-dark {
-      background-color: #363636;
+      background-color: rgba(255, 255, 255, 0.05); /* 半透明 */
+      backdrop-filter: blur(5px);
+      color: #f0f0f0;
       transition: all 0.3s ease;
-      border: 1px solid transparent;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
     .button.is-dark:hover {
-      background-color: #000;
+      background-color: rgba(255, 255, 255, 0.15) !important;
       transform: translateY(-2px);
-      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-      border-color: #555;
+      box-shadow: 0 0 20px rgba(79, 172, 254, 0.3); /* 青色呼吸光晕 */
+      border-color: #4facfe;
+      color: #ffffff;
     }
 
     /* 滚动出现动画 */
@@ -201,32 +292,53 @@
       transform: translateY(0);
     }
 
-    /* Highlights 卡片化优化 */
+    /* Highlights 卡片化优化 - 玻璃拟态 */
     .highlight-box {
-      background: #f5f5f5; /* 与对话框统一的浅灰色 */
+      background: rgba(30, 30, 45, 0.4); /* 深色半透明 */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       margin-bottom: 20px;
-      border-left: 5px solid #b0981f; /* 金色边框呼应文中颜色 */
+      border: 1px solid rgba(255, 255, 255, 0.08); 
+      border-left: 5px solid #4facfe; /* 青色强调，呼应链接色 */
       transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
     }
     .highlight-box:hover {
-      background: #eeeeee; /* 悬停稍微变深 */
+      background: rgba(40, 40, 60, 0.6);
       transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
-    /* 对话框高级质感 */
+    /* 对话框高级质感 - 深度玻璃拟态 */
     .dialogue-container {
-      /* ...existing code... */
-      background-color: #f9f9f9; /* 稍微加深一点灰，增加对比 */
-      box-shadow: 0 15px 35px rgba(0,0,0,0.06); /* 更柔和深邃的阴影 */
-      border: 1px solid rgba(0,0,0,0.02);
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 550px; 
+      background: rgba(20, 20, 30, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08); /* 统一边框风格 */
+      border-radius: 15px;
+      position: relative;
+    }
+    
+    .footer {
+      background-color: transparent;
+      color: #8b949e;
+      padding-bottom: 3rem;
     }
     
     .user-text p {
-      background: linear-gradient(135deg, #007aff, #0056b3); /* 渐变色气泡 */
+      background: linear-gradient(135deg, #2b32b2 10%, #1488cc 100%); /* 深蓝紫到青色渐变 */
+      border: 1px solid rgba(255, 255, 255, 0.1);
       /* ...existing code... */
     }
 
@@ -244,7 +356,7 @@
     /* Logo 样式 */
     .project-logo {
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4)); /* 科技光盾 */
       cursor: pointer;
       animation: logo-intro 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s;
     }
@@ -260,18 +372,18 @@
     /* 鼠标悬停在主标题整体时触发特效 */
     .publication-title:hover .project-logo {
       transform: scale(1.15) rotate(-3deg);
-      filter: drop-shadow(0 10px 20px rgba(52, 152, 219, 0.4));
+      filter: drop-shadow(0 10px 20px rgba(255, 255, 255, 0.3));
     }
 
     .publication-title:hover .main-title-text {
       transform: scale(1.05) translateY(-2px);
-      filter: brightness(1.2) hue-rotate(-10deg);
+      filter: brightness(1.2);
     }
 
     /* --- 开场动画 Keyframes --- */
     @keyframes logo-intro {
       0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
-      50% { transform: scale(1.15) rotate(-3deg); filter: drop-shadow(0 10px 20px rgba(52, 152, 219, 0.4)); }
+      50% { transform: scale(1.15) rotate(-3deg); filter: drop-shadow(0 10px 20px rgba(255, 255, 255, 0.3)); }
       100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
     }
 
@@ -284,7 +396,7 @@
     /* --- 小标题特效 (复刻大标题) --- */
     h2.title .section-logo {
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.3));
       display: inline-block;
       vertical-align: middle;
       margin-right: 10px; /* 调整图标和文字间距 */
@@ -299,12 +411,12 @@
     /* 鼠标悬停在标题整体（包括文字）时触发特效 */
     h2.title:hover .section-logo {
       transform: scale(1.15) rotate(-3deg);
-      filter: drop-shadow(0 10px 20px rgba(52, 152, 219, 0.4));
+      filter: drop-shadow(0 10px 20px rgba(255, 255, 255, 0.3));
     }
 
     h2.title:hover .section-text {
       transform: scale(1.05) translateY(-2px);
-      filter: brightness(1.2) hue-rotate(-10deg);
+      filter: brightness(1.2);
     }
 
     /* --- 副标题特效 --- */
@@ -316,8 +428,8 @@
     }
 
     .subtitle-text:hover {
-      color: #3498db !important; /* 悬停变蓝 */
-      text-shadow: 0 0 10px rgba(52, 152, 219, 0.4);
+      color: #ffffff !important; /* 悬停变白 */
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
       transform: scale(1.02);
     }
 
@@ -331,6 +443,23 @@
         transform: translateY(0);
       }
     }
+
+    /* BibTeX 代码块样式优化 - 玻璃拟态 */
+    #BibTeX pre {
+      background-color: rgba(20, 20, 30, 0.6);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    
+    #BibTeX code {
+      background-color: transparent;
+      color: #b0b0b0;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -343,9 +472,9 @@
           <h1 class="title is-1 publication-title" style="display: flex; flex-direction: column; align-items: center;">
             <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
               <img src="./static/images/videoworld_logo.svg" style="width: 60px; height: auto;" alt="Logo" class="project-logo"/>
-              <span class="main-title-text" style="font-family: 'Georgia', serif; font-weight: 700; background: linear-gradient(120deg, #2c3e50, #3498db); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">VideoWorld 2</span>
+              <span class="main-title-text" style="font-family: 'Exo 2', sans-serif; font-weight: 700; color: #f0f0f0;">VideoWorld 2</span>
             </div>
-            <span class="subtitle-text" style="font-family: 'Georgia', serif; font-size: 0.6em; color: #555; font-weight: 400; letter-spacing: 0.5px;">Learning Transferable Knowledge from Real-world Videos</span>
+            <span class="subtitle-text" style="font-family: 'Exo 2', sans-serif; font-size: 0.6em; color: #ffffff; font-weight: 400; letter-spacing: 0.5px;">Learning Transferable Knowledge from Real-world Videos</span>
           </h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
@@ -356,7 +485,7 @@
                 <a href="https://weiyc.github.io/"><font face="Georgia">Xiao Yu</font></a><sup>1</sup>,</span>
             </span>
             <span class="author-block">
-              <a href="https://weiyc.github.io/"><font face="Georgia">Guixun Luo</font></a><sup>1</sup>,
+              <a href="https://weiyc.github.io/"><font face="Georgia">Guixun Luo</font></a><sup>1<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>†</mo></math></sup>,
 
             </span>
             <br>
@@ -440,7 +569,7 @@
     <div class="columns is-centered has-text-centered">
     <div class="column is-full">
     <div class="hero-body">
-      <img src="./static/images/fig1_seed.png"
+      <img src="./static/images/Fig1_final.png"
                 class="interpolation-image"
                 alt="Interpolate start reference image."/>
 
@@ -723,13 +852,13 @@
           
           <div class="highlight-box">
             <p style="font-size: 20px; margin-bottom: 0;">
-              1. <b>We are the first to explore</b> <span style="color: rgb(176, 152, 31)">how to learn transferable world knowledge for complex long-horizon tasks directly from raw real-world videos, </span> and we reveal that disentangling action dynamics from visual appearance is essential for successful knowledge learning.
+              1. <b>We are the first to explore</b> <span style="color: #00f2fe">how to learn transferable world knowledge for complex long-horizon tasks directly from raw real-world videos, </span> and we reveal that disentangling action dynamics from visual appearance is essential for successful knowledge learning.
             </p>
           </div>
 
           <div class="highlight-box">
             <p style="font-size: 20px; margin-bottom: 0;">
-              2. <b>We propose VideoWorld 2</b> <span style="color: rgb(176, 152, 31)">, whose core is a disentangled Latent Dynamics Model (dLDM) that decouples task-relevant dynamics from visual appearance</span>, enhancing the quality and transferability of learned knowledge.
+              2. <b>We propose VideoWorld 2</b> <span style="color: #00f2fe">, whose core is a disentangled Latent Dynamics Model (dLDM) that decouples task-relevant dynamics from visual appearance</span>, enhancing the quality and transferability of learned knowledge.
             </p>
           </div>
 
@@ -762,11 +891,11 @@
         <div class="content has-text-justified">
           
           <p style="font-size: 20px;">
-            Current AI models learning knowledge mainly from text data, however, text alone can not fully encapsulate the rich information inherent in the real visual world. In contrast, biological organisms can acquire knowledge solely from visual inputs, flexibly applying and generalizing it to future scenarios. For instance, a child can replicate paper folding skills observed in a video using different materials without any textual guidance. Endowing AI with this capacity to learn generalizable knowledge from raw video is fundamental for task execution in both real and digital world, and holds significant potential for scaling up AI knowledge.
+            Current AI models  primarily learn  knowledge from large-scale text data . However, text alone cannot fully capture the rich information of the real visual world, including world dynamics, spatial relationships, and underlying physical laws. In contrast, animals in nature can acquire knowledge directly from visual signals, and generalize it to solve tasks across diverse scenarios. For instance, a child can reproduce paper-folding skills demonstrated in a video using different paper materials,  without any language instruction. Given the vast abundance of video content available on the internet, enabling  AI models  to learn generalizable knowledge from raw video data holds significant promise for scaling  their knowledge acquisition and  is fundamental  to their ability to execute tasks effectively in  both real-world and digital environments.
             </p>
             <p style="font-size: 20px;">
-            VideoWorld first explores learning knowledge from synthetic videos. However, its training recipe and model design impede knowledge extraction from real-world videos. Other approaches either rely on labels or language guidance to extract knowledge from video or handle only seconds-long tasks. When confronted with minute-long, complex multi-step task videos, current methods fail to replicate the human ability to extract core task knowledge and apply it to novel scenarios solely through observation—even for tasks like paper folding that children can easily master (See Sec. 4.2 for details). These constraints raise an important question: 
-            <b><i>Can AI learn transferable knowledge for complex and long-horizon tasks directly from unlabeled real-world videos?</i></b>
+            VideoWorld is among the first works to explore  learning knowledge from synthetic videos. It investigates the acquisition of rules, as well as reasoning and planning capabilities,  from Go game records and simulated robotics environments. The study demonstrates that  models can learn such knowledge solely from visual signals using an autoregressive video generation paradigm. However, extending this paradigm beyond synthetic   domains remains an open challenge.  Real-world videos exhibit substantial   visual diversity, complex action  dynamics,  and often involve long-horizon, multi-step interactions.  These characteristics prevent   the training approach and model design of VideoWorld  from being  directly applied to realistic settings. When presented with minute-long, multi-step real-world task videos, VideoWorld  fails to   extract the core task-solving knowledge or generalize it to novel scenarios   through observation alone--even for tasks such as paper folding that are easily mastered by children. These limitations  naturally  lead to the following question:
+            <b><i>Can AI models learn transferable knowledge for complex, long-horizon tasks directly from unlabeled real-world videos?</i></b>
           </p>
         </div>
        </div>
@@ -815,13 +944,38 @@
     <div class="columns is-centered ">
       <div class="column is-full">
         <div class="content has-text-justified">
-          <img src="./static/images/method_v4.png"
+          <img src="./static/images/method_final.png"
                 class="interpolation-image"
                 alt="Interpolate start reference image."/>
                 <figcaption style="font-size: 16px;">Figure 3: (Left) First, a dLDM compresses future visual changes into compact and generalizable latent codes. These codes are then modeled by an autoregressive transformer. (Right) In inference, the transformer predicts latent codes for a new, unseen environment from the input image, which are subsequently decoded into task execution videos.</figcaption>
         
           <br>
           <p style="font-size: 20px;">We propose <b>VideoWorld 2</b>, which features a <b>disentangled Latent Dynamics Model</b> (dLDM) as its core design to effectively decouple appearance modeling from action dynamics learning, thereby enabling robust knowledge acquisition. The dLDM consists of a causal VQ-VAE and a pretrained Video Diffusion Model (VDM). The VQ-VAE compresses future visual changes into discrete latent codes that capture task-relevant dynamics, while the VDM models visual appearance and produces high-fidelity reconstructions. The latent codes condition the VDM through cross-attention, and gradients from the VDM further refine these codes so they focus on concise and transferable dynamics rather than appearance details. By delegating appearance modeling to the pretrained VDM, VideoWorld 2 learns more robust and generalizable latent dynamics than prior approaches.</p>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">
+          <img src="./static/images/videoworld_logo.svg" class="section-logo" alt="Logo" width="5%"/>
+          <span class="section-text">dLDM</span>
+        </h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered ">
+      <div class="column is-full">
+        <div class="content has-text-justified">
+          <img src="./static/images/dLDM_final.png"
+                class="interpolation-image"
+                alt="dLDM architecture"/>
+          <figcaption style="font-size: 16px;">The proposed disentangled latent dynamics model (dLDM). (Left) Latent dynamic model in VideoWorld. Visual changes between the first and subsequent frames are compressed into a set of latent codes. (right)  The dLDM proposed in VideoWorld 2. It employs a pre-trained VDM as an appearance prior, yielding better latent codes and facilitating high-fidelity video output.</figcaption>
+        </div>
+       </div>
+    </div>
   </div>
 </section>
 
