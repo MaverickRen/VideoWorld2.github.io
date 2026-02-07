@@ -819,7 +819,7 @@
         </h2>
         <div class="content has-text-justified">
           <p style="font-size: 20px;">
-            <font face="Georgia">Learning transferable knowledge from unlabeled video data and applying it in new environments is a fundamental capability of intelligent agents. This work presents <b>VideoWorld 2</b>, which extends VideoWorld and offers the first investigation into learning transferable knowledge directly from raw real-world videos. At its core, VideoWorld 2 introduces a disentangled Latent Dynamics Model (dLDM) that decouples action dynamics from visual appearance: a pretrained video diffusion model handles visual appearance modeling, enabling the dLDM to learn latent codes that focus on compact and meaningful task-related dynamics. These latent codes are then modeled autoregressively to learn task policies and support long-horizon reasoning. We evaluate VideoWorld 2 on challenging real-world handcraft making tasks, where prior video generation and latent-dynamics models struggle to operate reliably. Remarkably, VideoWorld 2 achieves up to <b>70% improvement in task success rate</b> and produces coherent long execution videos. In robotics, we show that VideoWorld 2 can acquire effective manipulation knowledge from the Open-X dataset, which substantially improves task performance on CALVIN. This study reveals the potential of learning transferable world knowledge directly from raw videos, with all code, data, and models to be open-sourced for further research.</font>
+            <font face="Georgia">Learning transferable knowledge from unlabeled video data and applying it in new environments is a fundamental capability of intelligent agents. This work presents <b>VideoWorld 2</b>, which extends VideoWorld and offers the first investigation into learning transferable knowledge directly from raw real-world videos. At its core, VideoWorld 2 introduces a dynamic-enhanced Latent Dynamics Model (dLDM) that decouples action dynamics from visual appearance: a pretrained video diffusion model handles visual appearance modeling, enabling the dLDM to learn latent codes that focus on compact and meaningful task-related dynamics. These latent codes are then modeled autoregressively to learn task policies and support long-horizon reasoning. We evaluate VideoWorld 2 on challenging real-world handcraft making tasks, where prior video generation and latent-dynamics models struggle to operate reliably. Remarkably, VideoWorld 2 achieves up to <b>70% improvement in task success rate</b> and produces coherent long execution videos. In robotics, we show that VideoWorld 2 can acquire effective manipulation knowledge from the Open-X dataset, which substantially improves task performance on CALVIN. This study reveals the potential of learning transferable world knowledge directly from raw videos, with all code, data, and models to be open-sourced for further research.</font>
           </p>
         </div>
       </div>
@@ -858,7 +858,7 @@
 
           <div class="highlight-box">
             <p style="font-size: 20px; margin-bottom: 0;">
-              2. <b>We propose VideoWorld 2</b> <span style="color: #00f2fe">, whose core is a disentangled Latent Dynamics Model (dLDM) that decouples task-relevant dynamics from visual appearance</span>, enhancing the quality and transferability of learned knowledge.
+              2. <b>We propose VideoWorld 2</b> <span style="color: #00f2fe">, whose core is a dynamic-enhanced Latent Dynamics Model (dLDM) that decouples task-relevant dynamics from visual appearance</span>, enhancing the quality and transferability of learned knowledge.
             </p>
           </div>
 
@@ -972,7 +972,7 @@
           <img src="./static/images/dLDM_final.png"
                 class="interpolation-image"
                 alt="dLDM architecture"/>
-          <figcaption style="font-size: 16px;">The proposed disentangled latent dynamics model (dLDM). (Left) Latent dynamic model in VideoWorld. Visual changes between the first and subsequent frames are compressed into a set of latent codes. (right)  The dLDM proposed in VideoWorld 2. It employs a pre-trained VDM as an appearance prior, yielding better latent codes and facilitating high-fidelity video output.</figcaption>
+          <figcaption style="font-size: 16px;">The proposed dynamic-enhanced Latent Dynamics Model (dLDM). (Left) Latent dynamic model in VideoWorld. Visual changes between the first and subsequent frames are compressed into a set of latent codes. (right)  The dLDM proposed in VideoWorld 2. It employs a pre-trained VDM as an appearance prior, yielding better latent codes and facilitating high-fidelity video output.</figcaption>
         </div>
        </div>
     </div>
