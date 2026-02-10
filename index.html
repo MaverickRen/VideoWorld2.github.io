@@ -537,7 +537,7 @@
               </span>
               <!-- Video Link. -->
               <span class="link-block">
-                <a href="https://youtu.be/Cdi-qikbEzk"
+                <a href="https://www.youtube.com/watch?v=2qz7_iLV7qk"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-youtube"></i>
@@ -547,7 +547,7 @@
               </span>
               <!-- Code Link. -->
               <span class="link-block">
-                <a href="https://github.com/bytedance/VideoWorld"
+                <a href="https://github.com/ByteDance-Seed/VideoWorld/tree/main/VideoWorld2"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
@@ -829,7 +829,7 @@
       <div class="column is-full">
         <!-- <h2 class="title is-3"></h2> -->
         <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/y_TT4dtIPXA?si=jiaM-BjxEeT2WLL5"
+          <iframe src="https://www.youtube.com/embed/2qz7_iLV7qk?si=yoqn8j52BSsCOscZ"
                   frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
       </div>
@@ -944,13 +944,13 @@
     <div class="columns is-centered ">
       <div class="column is-full">
         <div class="content has-text-justified">
-          <img src="./static/images/method_final.png"
+          <img src="./static/images/ldm_seed_v2.png"
                 class="interpolation-image"
                 alt="Interpolate start reference image."/>
                 <figcaption style="font-size: 16px;">Figure 3: (Left) First, a dLDM compresses future visual changes into compact and generalizable latent codes. These codes are then modeled by an autoregressive transformer. (Right) In inference, the transformer predicts latent codes for a new, unseen environment from the input image, which are subsequently decoded into task execution videos.</figcaption>
         
           <br>
-          <p style="font-size: 20px;">We propose <b>VideoWorld 2</b>, which features a <b>disentangled Latent Dynamics Model</b> (dLDM) as its core design to effectively decouple appearance modeling from action dynamics learning, thereby enabling robust knowledge acquisition. The dLDM consists of a causal VQ-VAE and a pretrained Video Diffusion Model (VDM). The VQ-VAE compresses future visual changes into discrete latent codes that capture task-relevant dynamics, while the VDM models visual appearance and produces high-fidelity reconstructions. The latent codes condition the VDM through cross-attention, and gradients from the VDM further refine these codes so they focus on concise and transferable dynamics rather than appearance details. By delegating appearance modeling to the pretrained VDM, VideoWorld 2 learns more robust and generalizable latent dynamics than prior approaches.</p>
+          <p style="font-size: 20px;">We propose <b>VideoWorld 2</b>, which features a <b>dynamic-enhanced Latent Dynamics Model</b> (dLDM) as its core design to effectively decouple appearance modeling from action dynamics learning, thereby enabling robust knowledge acquisition. The dLDM consists of a causal VQ-VAE and a pretrained Video Diffusion Model (VDM). The VQ-VAE compresses future visual changes into discrete latent codes that capture task-relevant dynamics, while the VDM models visual appearance and produces high-fidelity reconstructions. The latent codes condition the VDM through cross-attention, and gradients from the VDM further refine these codes so they focus on concise and transferable dynamics rather than appearance details. By delegating appearance modeling to the pretrained VDM, VideoWorld 2 learns more robust and generalizable latent dynamics than prior approaches.</p>
         </div>
       </div>
     </div>
@@ -972,7 +972,7 @@
           <img src="./static/images/dLDM_final.png"
                 class="interpolation-image"
                 alt="dLDM architecture"/>
-          <figcaption style="font-size: 16px;">The proposed dynamic-enhanced Latent Dynamics Model (dLDM). (Left) Latent dynamic model in VideoWorld. Visual changes between the first and subsequent frames are compressed into a set of latent codes. (right)  The dLDM proposed in VideoWorld 2. It employs a pre-trained VDM as an appearance prior, yielding better latent codes and facilitating high-fidelity video output.</figcaption>
+          <figcaption style="font-size: 16px;">The proposed dynamic-enhanced latent dynamics model (dLDM). (Left) Latent dynamic model in VideoWorld. Visual changes between the first and subsequent frames are compressed into a set of latent codes. (right)  The dLDM proposed in VideoWorld 2. It employs a pre-trained VDM as an appearance prior, yielding better latent codes and facilitating high-fidelity video output.</figcaption>
         </div>
        </div>
     </div>
